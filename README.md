@@ -1,9 +1,9 @@
 # trackexpense-spring
 A simple and efficient Expense Tracker application built with Java Spring Boot. Easily record, manage, and analyze your personal expenses.
 
-
-# Structure Explanation
 ---
+
+## Structure Explanation
 
 **Brief explanation of each folder:**
 
@@ -19,3 +19,5 @@ A simple and efficient Expense Tracker application built with Java Spring Boot. 
 - `resources`: Resources needed by the application, such as configuration properties, static files, and templates.
 
 ---
+
+🛠 **STILL PROGRESS**
