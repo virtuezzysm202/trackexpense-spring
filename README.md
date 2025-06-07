@@ -20,4 +20,4 @@ A simple and efficient Expense Tracker application built with Java Spring Boot. 
 
 ---
 
-🛠 **STILL PROGRESS**
+🛠 **WORK IN PROGRESS**
