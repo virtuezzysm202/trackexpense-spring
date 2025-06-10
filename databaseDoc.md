@@ -2,19 +2,22 @@
 
 ---
 
+# USING MY SQL 
+
 ## 1. Main Table
 
 ### 1.2. `users`
 This table stores application user data.
 
-| Column         | Data Type          | Description                         |
-|----------------|--------------------|-----------------------------------|
-| `id`           | BIGINT (PK, AI)    | Primary key, auto-increment        |
-| `full_name`    | VARCHAR            | User's full name                   |
-| `email`        | VARCHAR (Unique)   | User's email, unique               |
-| `phone_number` | VARCHAR            | Phone number                      |
-| `password`     | VARCHAR            | Password stored as a hashed value (BCrypt) |
-
+Columns:
+id bigint AI PK 
+full_name varchar(255) 
+email varchar(255) 
+phone_number varchar(255) 
+password_hash varchar(255) 
+created_at timestamp 
+updated_at timestamp 
+profile_photo varchar(255)
 ---
 
 ## 2. Relationships
