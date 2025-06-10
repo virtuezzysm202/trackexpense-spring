@@ -31,6 +31,8 @@ public class User {
 
     private LocalDateTime updatedAt;
 
+    private String profilePhoto;
+
     public User() {
        
     }
@@ -95,5 +97,13 @@ public class User {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+    
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 }
