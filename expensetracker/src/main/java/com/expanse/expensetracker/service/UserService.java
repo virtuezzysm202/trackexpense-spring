@@ -3,7 +3,7 @@ package com.expanse.expensetracker.service;
 import com.expanse.expensetracker.models.User;
 import com.expanse.expensetracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,14 +22,14 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     // Directory to store profile photos (adjust as needed)
     private final String UPLOAD_DIR = "uploads/profile_photos/";
 
     public User createUser(User user) {
         // Hash the password before saving
-        user.setPasswordHash(bCryptPasswordEncoder.encode(user.getPasswordHash()));
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         return userRepository.save(user);
     }
 
@@ -43,6 +43,13 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("User not found with email: " + email));
     }
 
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+    
+    
+
     public User updateUser(Long id, User updatedUser) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found with id: " + id));
@@ -54,7 +61,7 @@ public class UserService {
 
         // Update password if provided and not empty
         if (updatedUser.getPasswordHash() != null && !updatedUser.getPasswordHash().isEmpty()) {
-            existingUser.setPasswordHash(bCryptPasswordEncoder.encode(updatedUser.getPasswordHash()));
+            existingUser.setPasswordHash(passwordEncoder.encode(updatedUser.getPasswordHash()));
         }
 
         return userRepository.save(existingUser);
