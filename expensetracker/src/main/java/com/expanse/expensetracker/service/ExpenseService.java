@@ -1,8 +1,11 @@
 package com.expanse.expensetracker.service;
 
 import com.expanse.expensetracker.dto.ExpenseRequest;
-import com.expanse.expensetracker.models.*;
-import com.expanse.expensetracker.repository.*;
+import com.expanse.expensetracker.models.Category;
+import com.expanse.expensetracker.models.Expense;
+import com.expanse.expensetracker.models.User;
+import com.expanse.expensetracker.repository.CategoryRepository;
+import com.expanse.expensetracker.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +36,18 @@ public class ExpenseService {
         expense.setAmount(request.getAmount());
         expense.setDate(request.getDate());
         expense.setUser(user);
+
         if (request.getCategoryId() != null) {
-            categoryRepository.findById(request.getCategoryId())
-                .ifPresent(expense::setCategory);
+            Category category = categoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
+
+            if (!category.getUser().getId().equals(user.getId())) {
+                throw new RuntimeException("Unauthorized to use this category");
+            }
+
+            expense.setCategory(category);
         }
+
         return expenseRepository.save(expense);
     }
 
@@ -45,15 +56,16 @@ public class ExpenseService {
         if (optionalExpense.isPresent()) {
             Expense expense = optionalExpense.get();
             if (!expense.getUser().getId().equals(user.getId())) {
-                return Optional.empty(); // user tidak punya akses
+                return Optional.empty();
             }
+
             expense.setDescription(request.getDescription());
             expense.setAmount(request.getAmount());
             expense.setDate(request.getDate());
 
             if (request.getCategoryId() != null) {
                 categoryRepository.findById(request.getCategoryId())
-                    .ifPresent(expense::setCategory);
+                        .ifPresent(expense::setCategory);
             } else {
                 expense.setCategory(null);
             }
