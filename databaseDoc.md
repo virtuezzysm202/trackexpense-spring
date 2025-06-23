@@ -34,7 +34,7 @@ Stores custom expense categories per user.
 **Constraints**:
 - `user_id` references `users(id)`  
 - `ON DELETE CASCADE`: deletes all categories if user is deleted
-
+- Table name is categories
 ---
 
 ### 3. `expense`
