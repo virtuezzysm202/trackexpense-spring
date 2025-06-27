@@ -14,14 +14,14 @@ const RegisterPage = () => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:8080/api/auth/register', {
-        name,
-        email,
-        phone,
-        password,
+        fullName: name,
+        email: email,
+        phoneNumber: phone,
+        password: password,
       });
       navigate('/login');
     } catch (err) {
-      setErrMsg('Gagal register. Email mungkin sudah digunakan.');
+      setErrMsg('Email is Already, Try another email');
     }
   };
 
