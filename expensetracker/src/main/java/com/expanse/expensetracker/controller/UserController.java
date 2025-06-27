@@ -69,5 +69,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser(@RequestAttribute("user") User user) {
+        return ResponseEntity.ok(user);
+    }
+
+
     
 }
