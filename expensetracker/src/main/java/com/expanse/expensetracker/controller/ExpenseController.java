@@ -45,4 +45,36 @@ public class ExpenseController {
             return ResponseEntity.status(403).body(e.getMessage());
         }
     }
+
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateExpense(@PathVariable Long id,
+                                           @AuthenticationPrincipal User user,
+                                           @RequestBody ExpenseRequest request) {
+        if (user == null) {
+            return ResponseEntity.status(403).body("User not authenticated");
+        }
+
+        return expenseService.updateExpense(id, user, request)
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(403).body("Unauthorized to update this expense"));
+    }
+
+    @DeleteMapping("/{id}")
+public ResponseEntity<?> deleteExpense(@PathVariable Long id,
+                                       @AuthenticationPrincipal User user) {
+    if (user == null) {
+        return ResponseEntity.status(403).body("User not authenticated");
+    }
+
+    boolean deleted = expenseService.deleteExpense(id, user);
+    if (deleted) {
+        return ResponseEntity.ok().build();
+    } else {
+        return ResponseEntity.status(403).body("Unauthorized to delete this expense");
+    }
 }
+
+}
+
+
